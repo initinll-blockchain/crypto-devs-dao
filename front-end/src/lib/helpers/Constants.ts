@@ -1,0 +1,4 @@
+export class Constants {
+    static readonly CRYPTODEVS_DAO_CONTRACT_ADDRESS: string = '0x624EED48f999800078456630663F75206E77D305';
+    static readonly CRYPTODEVS_NFT_CONTRACT_ADDRESS: string = '0x123a7ef5a0107e04Cc2F6af39dBE43c44F5dC4a4';
+}
