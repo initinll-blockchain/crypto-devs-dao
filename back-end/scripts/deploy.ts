@@ -1,9 +1,5 @@
-// We require the Hardhat Runtime Environment explicitly here. This is optional
-// but useful for running the script in a standalone fashion through `node <script>`.
-//
-// When running the script with `npx hardhat run <script>` you'll find the Hardhat
-// Runtime Environment's members available in the global scope.
 import { ethers } from "hardhat";
+import { CRYPTODEVS_NFT_CONTRACT_ADDRESS } from "../constants/constants"; 
 
 async function main() {
   // Hardhat always runs the compile task when running scripts with its command
@@ -13,13 +9,26 @@ async function main() {
   // manually to make sure everything is compiled
   // await hre.run('compile');
 
-  // We get the contract to deploy
-  const Greeter = await ethers.getContractFactory("Greeter");
-  const greeter = await Greeter.deploy("Hello, Hardhat!");
+  // Deploy the FakeNFTMarketplace contract first
+  const FakeNFTMarketplace = await ethers.getContractFactory("FakeNFTMarketplace");
+  const fakeNftMarketplace = await FakeNFTMarketplace.deploy();
+  await fakeNftMarketplace.deployed();
 
-  await greeter.deployed();
+  console.log("FakeNFTMarketplace deployed to: ", fakeNftMarketplace.address);
 
-  console.log("Greeter deployed to:", greeter.address);
+  // Now deploy the CryptoDevsDAO contract
+  const CryptoDevsDAO = await ethers.getContractFactory("CryptoDevsDAO");
+  const cryptoDevsDAO = await CryptoDevsDAO.deploy(
+    fakeNftMarketplace.address,
+    CRYPTODEVS_NFT_CONTRACT_ADDRESS,
+    {
+      // This assumes your account has at least 1 ETH in it's account
+      // Change this value as you want
+      value: ethers.utils.parseEther("0.001"),
+    }
+  );
+  await cryptoDevsDAO.deployed();
+  console.log("CryptoDevsDAO deployed to: ", cryptoDevsDAO.address);
 }
 
 // We recommend this pattern to be able to use async/await everywhere
