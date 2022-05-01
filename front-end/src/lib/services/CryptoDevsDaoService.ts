@@ -143,8 +143,8 @@ export async function getNumProposalsInDAO(): Promise<string> {
     return numProposalsInDAO;
 }
 
-export async function getUserNFTBalance(): Promise<string> {
-    let nftBalance:string;
+export async function getUserNFTBalance(): Promise<number> {
+    let nftBalance:number;
     try {
         const signer = getSigner();
         const nftContract = getContract_nft();
@@ -183,7 +183,7 @@ export async function fetchProposalById(id:any): Promise<Proposal> {
     }
 }
 
-export async function fetchAllProposals(numProposals: any) : Promise<Array<Proposal>> {
+export async function fetchAllProposals(numProposals: number) : Promise<Array<Proposal>> {
     try {
         let proposals:Array<Proposal> = [];
         for (let i = 0; i < numProposals; i++) {
